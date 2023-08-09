@@ -1,24 +1,23 @@
 package com.example.demo.entity;
 
-import java.util.Objects;
 import java.util.UUID;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "EMPLOYEE")
 public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private  UUID id;
+    private UUID id;
     private String name;
     private String role;
     private double salary;
-    private String reportTo;
 
+    @ManyToOne
+    @JoinColumn(name= "manager_id")
+    private Manager manager;
 
 
     public UUID getId() {
@@ -53,12 +52,12 @@ public class Employee {
         this.salary = salary;
     }
 
-    public String getReportTo() {
-        return reportTo;
+    public Manager getReportTo() {
+        return manager;
     }
 
-    public void setReportTo(String reportTo) {
-        this.reportTo = reportTo;
+    public void setReportTo(Manager manager) {
+        this.manager = manager;
     }
 
     @Override
