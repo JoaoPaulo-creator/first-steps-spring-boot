@@ -33,7 +33,7 @@ public class EmployeeService implements EmployeeInterface {
     }
 
     @Override
-    public Optional<Employee> index(@PathVariable UUID id) {
+    public Optional<Employee> index(UUID id) {
         return employeeRepository.findById(id);
     }
 
