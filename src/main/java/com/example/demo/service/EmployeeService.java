@@ -47,6 +47,15 @@ public class EmployeeService implements EmployeeInterface {
     }
 
     @Override
+    public Optional<Employee> patch(UUID id, Employee employee) {
+        if (employee.getId() == null || !employeeRepository.existsById(employee.getId())) {
+            return Optional.empty();
+        }
+
+        return Optional.of(employeeRepository.save(employee));
+    }
+
+    @Override
     public void delete(@PathVariable UUID id) {
         employeeRepository.deleteById(id);
     }

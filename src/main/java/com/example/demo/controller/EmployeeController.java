@@ -22,9 +22,9 @@ public class EmployeeController {
     }
 
     /*
-    * O ResponseEntity<T> serve para retornar e ter controle do status http por completo, headers, content type, etc.
-    *
-    * */
+     * O ResponseEntity<T> serve para retornar e ter controle do status http por completo, headers, content type, etc.
+     *
+     * */
 
     @GetMapping("/employees")
     public ResponseEntity<List<Employee>> findAll() {
@@ -44,7 +44,7 @@ public class EmployeeController {
     @GetMapping("/employee/{id}")
     public ResponseEntity<Object> findOne(@PathVariable UUID id) {
         Optional<Employee> e = service.index(id);
-        if(e.isEmpty()){
+        if (e.isEmpty()) {
             var apiResponse = new ApiResponse("Employee not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiResponse);
         }
@@ -57,6 +57,14 @@ public class EmployeeController {
         Optional<Employee> updatedEmployee = service.update(id, employee);
         return updatedEmployee.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
     }
+
+    @PatchMapping("/employees/{id}")
+    public ResponseEntity<Employee> setEmployeeToManager(@RequestBody Employee employee, @PathVariable UUID id) {
+        employee.setId(id);
+        Optional<Employee> updatedEmployee = service.update(id, employee);
+        return updatedEmployee.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
+    }
+
 
     @DeleteMapping("/employees/{id}")
     void deleteEmployee(@PathVariable UUID id) {

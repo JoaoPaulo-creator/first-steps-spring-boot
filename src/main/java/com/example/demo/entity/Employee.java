@@ -15,7 +15,7 @@ public class Employee {
     private String role;
     private double salary;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.PERSIST)
     @JoinColumn(name= "manager_id")
     private Manager manager;
 
@@ -52,11 +52,11 @@ public class Employee {
         this.salary = salary;
     }
 
-    public Manager getReportTo() {
+    public Manager getManager() {
         return manager;
     }
 
-    public void setReportTo(Manager manager) {
+    public void setManager(Manager manager) {
         this.manager = manager;
     }
 

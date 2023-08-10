@@ -15,7 +15,7 @@ public interface EmployeeInterface {
     Employee store(Employee employee);
 
     Optional<Employee> update(UUID id, Employee employee);
-
+    Optional<Employee> patch(UUID id, Employee employee);
     void delete(UUID id);
 
 

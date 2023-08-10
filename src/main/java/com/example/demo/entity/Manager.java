@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -17,8 +18,8 @@ public class Manager {
     private UUID id;
     private String name;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "manager")
-    //@JoinColumn(name = "report_to_id")
     private Set<Employee> employeeList;
 
     public UUID getId() {

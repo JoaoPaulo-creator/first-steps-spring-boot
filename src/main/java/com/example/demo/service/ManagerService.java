@@ -10,12 +10,12 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class ReportToService implements ReportToInterface {
+public class ManagerService implements ManagerInterface {
 
     private final ReportToRepository reportToRepository;
 
 
-    public ReportToService(ReportToRepository reportToRepository) {
+    public ManagerService(ReportToRepository reportToRepository) {
         this.reportToRepository = reportToRepository;
     }
 
