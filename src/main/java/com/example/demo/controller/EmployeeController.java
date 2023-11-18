@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Employee;
 import com.example.demo.service.EmployeeService;
+import static com.example.demo.utils.ResponseMessageSerializer.*;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -10,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
 
 @RestController
 public class EmployeeController {
@@ -22,9 +23,10 @@ public class EmployeeController {
     }
 
     /*
-     * O ResponseEntity<T> serve para retornar e ter controle do status http por completo, headers, content type, etc.
+     * O ResponseEntity<T> serve para retornar e ter controle do status http por
+     * completo, headers, content type, etc.
      *
-     * */
+     */
 
     @GetMapping("/employees")
     public ResponseEntity<List<Employee>> findAll() {
@@ -35,10 +37,10 @@ public class EmployeeController {
     }
 
     @PostMapping("/employees")
-    public ResponseEntity<Employee> newEmployee(@RequestBody Employee employee) {
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(service.store(employee));
+    public Optional<Object> newEmployee(@RequestBody Employee employee) throws IllegalArgumentException {
+        // TODO: retornar um json com o erro
+        return service.store(employee)
+                .map(savedEmployee -> ResponseEntity.status(HttpStatus.CREATED).body(savedEmployee).getBody());
     }
 
     @GetMapping("/employee/{id}")
@@ -50,25 +52,4 @@ public class EmployeeController {
         }
         return ResponseEntity.status(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(e);
     }
-
-    @PutMapping("/employees/{id}")
-    public ResponseEntity<Employee> replaceEmployee(@RequestBody Employee employee, @PathVariable UUID id) {
-        employee.setId(id);
-        Optional<Employee> updatedEmployee = service.update(id, employee);
-        return updatedEmployee.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
-    @PatchMapping("/employees/{id}")
-    public ResponseEntity<Employee> setEmployeeToManager(@RequestBody Employee employee, @PathVariable UUID id) {
-        employee.setId(id);
-        Optional<Employee> updatedEmployee = service.update(id, employee);
-        return updatedEmployee.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
-    }
-
-
-    @DeleteMapping("/employees/{id}")
-    void deleteEmployee(@PathVariable UUID id) {
-        service.delete(id);
-    }
-
 }

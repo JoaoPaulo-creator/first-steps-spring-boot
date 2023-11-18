@@ -2,12 +2,9 @@ package com.example.demo.service;
 
 import com.example.demo.entity.Employee;
 import com.example.demo.repository.EmployeeRepository;
-import com.example.demo.utils.EmployeeNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -16,7 +13,6 @@ import java.util.UUID;
 public class EmployeeService implements EmployeeInterface {
 
     private final EmployeeRepository employeeRepository;
-
 
     public EmployeeService(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
@@ -28,36 +24,21 @@ public class EmployeeService implements EmployeeInterface {
     }
 
     @Override
-    public Employee store(@RequestBody Employee employee) {
-        return employeeRepository.save(employee);
+    public Optional<Employee> store(@RequestBody Employee employee) {
+        return validateEmployee(employee).map(validateEmployee -> employeeRepository.save(validateEmployee));
+    }
+
+    private Optional<Employee> validateEmployee(Employee employee) {
+        return Optional.ofNullable(employee)
+                .filter(e -> e.getName() != null) // fitrando somente os diferentes de null
+                .map(Optional::of)
+                .orElseThrow(() -> new IllegalArgumentException("name is required")); // se o filtro encontrar algo
+                                                                                      // diferente de nao null, entao
+                                                                                      // sera retornado uma exeception
     }
 
     @Override
     public Optional<Employee> index(UUID id) {
         return employeeRepository.findById(id);
     }
-
-    @Override
-    public Optional<Employee> update(UUID id, Employee employee) {
-        if (employee.getId() == null || !employeeRepository.existsById(employee.getId())) {
-            return Optional.empty();
-        }
-
-        return Optional.of(employeeRepository.save(employee));
-    }
-
-    @Override
-    public Optional<Employee> patch(UUID id, Employee employee) {
-        if (employee.getId() == null || !employeeRepository.existsById(employee.getId())) {
-            return Optional.empty();
-        }
-
-        return Optional.of(employeeRepository.save(employee));
-    }
-
-    @Override
-    public void delete(@PathVariable UUID id) {
-        employeeRepository.deleteById(id);
-    }
-
 }

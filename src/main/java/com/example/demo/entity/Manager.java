@@ -1,10 +1,8 @@
 package com.example.demo.entity;
 
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
@@ -38,7 +36,6 @@ public class Manager {
         this.name = name;
     }
 
-
     public Set<Employee> getEmployeeList() {
         return employeeList;
     }
@@ -49,9 +46,12 @@ public class Manager {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Manager manager)) return false;
-        return Objects.equals(id, manager.id) && Objects.equals(name, manager.name) && Objects.equals(employeeList, manager.employeeList);
+        if (this == o)
+            return true;
+        if (!(o instanceof Manager manager))
+            return false;
+        return Objects.equals(id, manager.id) && Objects.equals(name, manager.name)
+                && Objects.equals(employeeList, manager.employeeList);
     }
 
     @Override

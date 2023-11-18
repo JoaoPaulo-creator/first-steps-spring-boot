@@ -12,11 +12,5 @@ public interface EmployeeInterface {
 
     Optional<Employee> index(UUID id);
 
-    Employee store(Employee employee);
-
-    Optional<Employee> update(UUID id, Employee employee);
-    Optional<Employee> patch(UUID id, Employee employee);
-    void delete(UUID id);
-
-
+    Optional<Employee> store(Employee employee);
 }
